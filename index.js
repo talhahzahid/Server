@@ -11,7 +11,7 @@ const port = process.env.PORT || 8000;
 app.use(
   cors({
     origin: [
-      "https://ennovatriz.vercel.app/",
+      "https://ennovatriz.vercel.app",
       // "https://microfinance-app-frontend-phi.vercel.app",
       // "https://microfinance-app-dashboard.vercel.app",
     ],
