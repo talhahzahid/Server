@@ -1,45 +1,35 @@
-// index.js (or server.js)
-import express from "express";
+import express, { urlencoded } from "express";
 import dotenv from "dotenv";
-import cors from "cors";
-import sequelize from "./src/database/db.js";
-import messageRouter from "./src/routes/user_message.routes.js";
+dotenv.config();
+import connectdb from "./src/database/db.js";
+import router from "./src/routes/user_message.routes.js";
 
 dotenv.config();
-
 const app = express();
-
-app.use(cors());
+const port = process.env.PORT || 8000;
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:5173",
+//       "https://microfinance-app-frontend-phi.vercel.app",
+//       "https://microfinance-app-dashboard.vercel.app",
+//     ],
+//     credentials: true,
+//   })
+// );
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
+app.use(urlencoded({ extended: false }));
 app.get("/", (req, res) => {
-  res.send("Hello Server");
+  res.send("HELLO SERVER");
 });
+app.use("/api/v1", router);
 
-app.use("/api/v1", messageRouter);
-
-// ✅ Export app for Vercel serverless
-export default app;
-
-// ✅ Only run the server locally (not on Vercel)
-if (process.env.NODE_ENV !== "production") {
-  const port = process.env.PORT || 8000;
-
-  const startServer = async () => {
-    try {
-      await sequelize.authenticate();
-      console.log("Database connected successfully");
-      await sequelize.sync({ force: false });
-
-      app.listen(port, () => {
-        console.log(`Server running on http://localhost:${port}`);
-      });
-    } catch (error) {
-      console.error("Unable to connect to the database:", error);
-      process.exit(1);
-    }
-  };
-
-  startServer();
-}
+connectdb()
+  .then(() => {
+    app.listen(port, () => {
+      console.log("SERVER IS RUNNING AT PORT", port);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });

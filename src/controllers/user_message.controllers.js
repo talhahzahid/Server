@@ -1,6 +1,7 @@
 import userMessageSchema from "../model/user_message.model.js";
 
 const userMessage = async (req, res) => {
+  console.log(req.body);
   const { fullName, email, phoneNumber, companyName, message } = req.body;
 
   if (!fullName || !email || !phoneNumber || !companyName || !message) {
@@ -8,10 +9,7 @@ const userMessage = async (req, res) => {
   }
 
   try {
-    const existingEmail = await userMessageSchema.findOne({
-      where: { email: email },
-    });
-
+    const existingEmail = await userMessageSchema.findOne({ email });
     if (existingEmail) {
       return res.status(409).json({
         message: "This email is already in use. Try a different email.",
