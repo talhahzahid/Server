@@ -5,7 +5,7 @@ import sequelize from "./src/database/db.js";
 import messageRouter from "./src/routes/user_message.routes.js";
 dotenv.config();
 const app = express();
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -26,6 +26,7 @@ const startServer = async () => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
     process.exit(1);
+    
   }
 };
 
